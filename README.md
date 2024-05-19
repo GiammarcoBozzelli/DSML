@@ -22,3 +22,6 @@ Tutorial Link
 ### Work Partition 
 Gimmy did
 Tim did
+
+### Disclaimer on GPT
+We used chat only to help us code bla bla
