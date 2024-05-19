@@ -13,6 +13,7 @@ The best results yields ..., because of .... We got this by doing ...
 
 #### Logistic Regression
 <img width="358" alt="image" src="https://github.com/GiammarcoBozzelli/DSML/assets/55870958/3ea4dd8b-0fa8-48ee-8f18-e76a94df712d">
+
 We implemented the basic logistic regression algorithm without any additional specifications and got an accuracy of almost 30%. We then used Bayesian optimisation for hyperparameter tuning which increased accuracy to 39,78%. This is the highest value we obtained with the standard logistic regression. As can be seen below, we specified possible parameters for the regularisation strength **C**, the type, i.e. **penalty**, and the **solver**. Since the lbfgs solver does not support lasso regression, we tried two different parameter sets. We once excluded L1 and used both solvers and once excluded lbfgs and used both, ridge and lasso regression. The resulting accuracies were almost identical with 39,8% (excluding L1) and 39,9% (excluding lbfgs). Since the latter is higher, we reported the final value of 39,9% accuracy of a logistic regression model using regularisation strength C of 0.441, L2 regularisation (Ridge Regression), and liblinear solver. 
 ```
 param_dist = {
@@ -32,6 +33,21 @@ param_dist = {
     'metric': ['euclidean', 'manhattan', 'cosine']
 }
 ```
+
+#### Decision Tree
+<img width="989" alt="image" src="https://github.com/GiammarcoBozzelli/DSML/assets/55870958/161fdc9d-dc28-49d6-bdd1-25e6d6864486">
+
+As for logistic regression and KNN approaches above, we used bayesian optimisation for hyperparameter tuning to find the most promising values for the parameters of a decision tree model. The specified optimisation is given below. 
+```
+param_dist = {
+    'max_depth': Integer(1, 50),
+    'min_samples_split': Integer(2, 20),
+    'min_samples_leaf': Integer(1, 20),
+    'criterion': Categorical(['gini', 'entropy']),
+    'max_features': Categorical([None, 'sqrt', 'log2'])
+}
+```
+max_depth is the maximum allowed depth of the tree. We specified it to be at 50 levels. While deeper trees can model more complex relationships in the data, they may also lead to overfitting if they are too deep relative to the complexity of the dataset. The same argumentation is valid for min_samples_split which indicates how many samples must accumulate at one node in order for it to split. Early splitting can namely lead to overfitted models. Similarly, min_samples_leaf specifies how many samples a leaf must have at least. This ensures the model does not learn overly specific patterns at the loss of generalisation. The different measures of quality of a split are given in criterion, where Gini Impurity and Entropy are the most common. In our optimal decision tree model, we use Gini Impurity, a maximum depth of 50 levels, a minimum amount of samples per leaf of 15, and a minimum amount of samples for a split of 20. This leaves us with an accuracy of 28.33%. The remaining key evaluation metrics are given in the Table 1 above. 
 
 ### Application 
 Link to the Webapp 
