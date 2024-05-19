@@ -6,14 +6,13 @@ Created on Wed Apr 24 15:45:54 2024
 @author: timbaettig
 """
 
-"""
-DS & ML
-"""
 #install packages
 #!pip install -U spacy
 
 #imoprt packages
 import pandas as pd
+from skopt import BayesSearchCV
+from skopt.space import Integer, Categorical, Real
 from sklearn.model_selection import train_test_split
 from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
@@ -56,18 +55,44 @@ y = training['difficulty']
 
 #Model Selection & Training - Random Forest
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-model = RandomForestClassifier(n_estimators=100, random_state=42)
-model.fit(X_train, y_train)
+param_dist = {
+    'n_estimators': Integer(10, 200),
+    'max_depth': Integer(1, 50),
+    'min_samples_split': Integer(2, 20),
+    'min_samples_leaf': Integer(1, 20),
+    'max_features': Categorical([None, 'sqrt', 'log2']),
+    'criterion': Categorical(['gini', 'entropy'])
+}
 
-#Evaluation
-y_pred = model.predict(X_test)
+# Initialize the BayesSearchCV
+bayes_search = BayesSearchCV(
+    estimator=RandomForestClassifier(random_state=42), 
+    search_spaces=param_dist, 
+    n_iter=32,  # Number of parameter settings sampled
+    cv=5,       # Number of folds in cross-validation
+    random_state=42,
+    n_jobs=-1   # Use all available cores
+)
+
+# Fit the model
+bayes_search.fit(X_train, y_train)
+
+# Get the best model
+best_rf_model = bayes_search.best_estimator_
+
+# Predict and evaluate
+y_pred = best_rf_model.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 conf_matrix = confusion_matrix(y_test, y_pred)
 report = classification_report(y_test, y_pred, target_names=['A1', 'A2', 'B1', 'B2', 'C1', 'C2'])
+
+# Print results
 print(f"Accuracy: {accuracy}")
+print("Confusion Matrix:")
+print(conf_matrix)
 print("Classification Report:")
 print(report)
-
+print(f"Best parameters: {bayes_search.best_params_}")
 
 #------------------------------------------------------------------------------------------------
 #Prediction Preparation 
@@ -95,4 +120,3 @@ print(submission.head())
 
 #Export
 #submission.to_csv(directory+'Outputs/prediction1_randomforest.csv', index=False)
-
