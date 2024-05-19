@@ -6,14 +6,16 @@ Created on Sun Apr 28 18:15:38 2024
 @author: timbaettig
 """
 
-"""
-DS & ML
-"""
 #install packages
 #!pip install -U spacy
+#pip install joblib
+
 
 #imoprt packages
 import pandas as pd
+from skopt import BayesSearchCV
+from skopt.space import Real, Categorical, Integer
+import joblib
 from sklearn.model_selection import train_test_split
 from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
@@ -24,6 +26,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix
 from sklearn.metrics import classification_report, accuracy_score
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
+
 
 
 #import data
@@ -52,14 +55,48 @@ training['processed_sentence'] = training['sentence'].apply(preprocess_text)
 
 # Vectorize the training data
 vectorizer = TfidfVectorizer(max_features=5000, ngram_range=(1,2))
-X_train = vectorizer.fit_transform(training['processed_sentence'])
-y_train = training['difficulty']
+X = vectorizer.fit_transform(training['processed_sentence'])
+y = training['difficulty']
 
-# Train SVM model as an alternative to logistic regression
-svm_model = SVC(kernel='linear', probability=True, random_state=42)
-svm_model.fit(X_train, y_train)
+# Train SVM model
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+param_dist = {
+    'C': Real(1e-6, 1e+6, prior='log-uniform'),
+    'kernel': Categorical(['linear', 'rbf', 'poly']),
+    'degree': Integer(2, 5),   # Only relevant for 'poly' kernel
+    'gamma': Categorical(['scale', 'auto'])  # Only relevant for 'rbf' and 'poly' kernels
+}
 
-# Make predictions with SVM model
+# Initialize the BayesSearchCV
+bayes_search = BayesSearchCV(
+    estimator=SVC(probability=True, random_state=42), 
+    search_spaces=param_dist, 
+    n_iter=32,  # Number of parameter settings sampled
+    cv=5,       # Number of folds in cross-validation
+    random_state=42,
+    n_jobs=-1   # Use all available cores
+)
+
+# Fit the model
+bayes_search.fit(X_train, y_train)
+
+# Get the best model
+best_svm_model = bayes_search.best_estimator_
+
+# Predict and evaluate
+y_pred = best_svm_model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+conf_matrix = confusion_matrix(y_test, y_pred)
+report = classification_report(y_test, y_pred, target_names=['A1', 'A2', 'B1', 'B2', 'C1', 'C2'])
+
+# Print results
+print(f"Accuracy: {accuracy}")
+print("Confusion Matrix:")
+print(conf_matrix)
+print("Classification Report:")
+print(report)
+print(f"Best parameters: {bayes_search.best_params_}")
+
 
 
 #------------------------------------------------------------------------------------------------
@@ -70,7 +107,15 @@ test['processed_sentence'] = test['sentence'].apply(preprocess_text)
 X_test = vectorizer.transform(test['processed_sentence'])
 
 # Make predictions
-predicted_difficulties = svm_model.predict(X_test)
+predicted_difficulties = best_svm_model.predict(X_test)
+
+# Save the vectorizer
+#vectorizer_path = directory + "tfidf_vectorizer_svm.pkl"
+#joblib.dump(vectorizer, vectorizer_path)
+
+# Save the trained SVM model
+#svm_model_path = directory + "svm_model.pkl"
+#joblib.dump(best_svm_model, svm_model_path)
 
 # Create a submission DataFrame
 submission = pd.DataFrame({
