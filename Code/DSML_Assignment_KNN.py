@@ -5,9 +5,12 @@ Created on Thu Apr 25 14:44:55 2024
 
 @author: timbaettig
 """
+#pip install scikit-optimize
+
 #imoprt packages
 import pandas as pd
 from sklearn.model_selection import train_test_split
+from skopt import BayesSearchCV
 from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
 import nltk
@@ -22,7 +25,6 @@ from sklearn.metrics import classification_report, accuracy_score
 training = pd.read_csv("https://raw.githubusercontent.com/GiammarcoBozzelli/DSML/main/DATA/training_data.csv")
 test = pd.read_csv("https://raw.githubusercontent.com/GiammarcoBozzelli/DSML/main/DATA/unlabelled_test_data.csv")
 
-#data exploration
 
 #data preparation
 def preprocess_text(text):
@@ -43,12 +45,30 @@ training['processed_sentence'] = training['sentence'].apply(preprocess_text)
 
 # Vectorize the training data
 vectorizer = TfidfVectorizer(max_features=1000)
-X_train = vectorizer.fit_transform(training['processed_sentence'])
-y_train = training['difficulty']
+X = vectorizer.fit_transform(training['processed_sentence'])
+y = training['difficulty']
 
-# Train Logistic Regression model
-knn_model = KNeighborsClassifier(n_neighbors=5)
-knn_model.fit(X_train, y_train)
+#Model Selection & Training
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+param_dist = {
+    'n_neighbors': (1, 30),
+    'weights': ['uniform', 'distance'],
+    'metric': ['euclidean', 'manhattan', 'cosine']
+}
+
+bayes_search = BayesSearchCV(KNeighborsClassifier(), param_dist, n_iter=32, cv=5, random_state=42)
+bayes_search.fit(X_train, y_train)
+best_knn_model = bayes_search.best_estimator_
+print(f"Best parameters: {bayes_search.best_params_}")
+
+#Evaluation
+y_pred = best_knn_model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+conf_matrix = confusion_matrix(y_test, y_pred)
+report = classification_report(y_test, y_pred, target_names=['A1', 'A2', 'B1', 'B2', 'C1', 'C2'])
+print(f"Accuracy: {accuracy}")
+print("Classification Report:")
+print(report)
 
 #------------------------------------------------------------------------------------------------
 #Prediction Preparation 
@@ -58,7 +78,7 @@ test['processed_sentence'] = test['sentence'].apply(preprocess_text)
 X_test = vectorizer.transform(test['processed_sentence'])
 
 # Make predictions
-predicted_difficulties = knn_model.predict(X_test)
+predicted_difficulties = best_knn_model.predict(X_test)
 
 submission = pd.DataFrame({
     'id': test['id'],
@@ -67,6 +87,3 @@ submission = pd.DataFrame({
 
 # Export to CSV
 #submission.to_csv(directory+'Outputs/prediction1_knn.csv', index=False)
-
-
-
