@@ -24,7 +24,7 @@ param_dist = {
 ```
 
 #### k-Nearest Neighbours
-We implemented the basic KNN model and played around with the parameters to get a feeling of how they behave. Generally, more neighbours do not necessarily increase accuracy. It depends on the weighting and distance metric employed. In our case, using cosine similarity as distance metric gave the highest accuracy. Using Bayesian optimisation, we found that the KNN model with 21 neighbours, cosine similarity, and distance-dependent weights gave the highest accuracy of **32,92%**. The remaining common evaluation metrics are given in _Table 1_ above. The optimal values for our parameters were found using Bayesian optimisation for hyperparameter tuning. The parameters for which we wanted to find optimal values are given in the code snippet below. It includes the amount of neighbours, whether we assign uniform weights or dependent on distance, and the three most common metrics for distance measuring.
+We implemented the basic [KNN model](https://raw.githubusercontent.com/GiammarcoBozzelli/DSML/main/Code/DSML_Assignment_KNN.py) and played around with the parameters to get a feeling of how they behave. Generally, more neighbours do not necessarily increase accuracy. It depends on the weighting and distance metric employed. In our case, using cosine similarity as distance metric gave the highest accuracy. Using Bayesian optimisation, we found that the KNN model with 21 neighbours, cosine similarity, and distance-dependent weights gave the highest accuracy of **32,92%**. The remaining common evaluation metrics are given in _Table 1_ above. The optimal values for our parameters were found using Bayesian optimisation for hyperparameter tuning. The parameters for which we wanted to find optimal values are given in the code snippet below. It includes the amount of neighbours, whether we assign uniform weights or dependent on distance, and the three most common metrics for distance measuring.
 ```
 param_dist = {
     'n_neighbors': (1, 30),
@@ -36,7 +36,7 @@ param_dist = {
 #### Decision Tree
 <img width="989" alt="image" src="https://github.com/GiammarcoBozzelli/DSML/assets/55870958/161fdc9d-dc28-49d6-bdd1-25e6d6864486">
 
-As for logistic regression and KNN approaches above, we used bayesian optimisation for hyperparameter tuning to find the most promising values for the parameters of a decision tree model. The specified optimisation is given below. 
+As for logistic regression and KNN approaches above, we used bayesian optimisation for hyperparameter tuning to find the most promising values for the parameters of a standard [decision tree model](https://raw.githubusercontent.com/GiammarcoBozzelli/DSML/main/Code/DSML_Assignment_DecisionTree.py). The specified optimisation is given below. 
 ```
 param_dist = {
     'max_depth': Integer(1, 50),
@@ -51,7 +51,7 @@ max_depth is the maximum allowed depth of the tree. We specified it to be at 50 
 The decision tree model performs substantially worse than logistic regression and KNN. This can be due to several reasons. Most likely, it is because in text analysis we employ TF-IDF vectorizers. These transform the text into TF-IDF features that are high-dimensional and sparse. Decision trees may not handle this kind of data well, as they make splits based on individual features, and many features in our case may have zero values.
 
 #### Random Forest
-As for the decision tree implementation above, we use hyperparameter tuning to find the most promising values for a prediction using a random forest classifier. 
+As for the decision tree implementation above, we use hyperparameter tuning to find the most promising values for a prediction using a [random forest classifier](https://raw.githubusercontent.com/GiammarcoBozzelli/DSML/main/Code/DSML_Assignment_RandomForest.py). 
 ```
 param_dist = {
     'n_estimators': Integer(10, 200),
@@ -65,7 +65,7 @@ param_dist = {
 The only parameter differing from the decision tree implementation is the n_estimators. Since we are building not a single but several trees in this approach, we need to specify how many we want to allow. Accordingly, n_estimators determines the number of individual decision trees that will be built and combined to form the random forest model. Allowing for several trees that then vote on an outcome seems to pay off. The accuracy of our optimised random forest classifier lies with **38,8%** substantially above the decision tree employed above. The optimal parameter values are Gini impurity, a maximum depth of 50 levels, at least 1 sample per leaf, and at least 19 samples to allow a split.  
 
 #### SVM
-
+Our first non-suggested or non-basic model is an [SVM model](https://raw.githubusercontent.com/GiammarcoBozzelli/DSML/main/Code/DSML_Assignment_SVM.py).
 
 ### Application 
 Link to the Webapp 
