@@ -14,7 +14,7 @@ The best results yields ..., because of .... We got this by doing ...
 #### Logistic Regression
 <img width="358" alt="image" src="https://github.com/GiammarcoBozzelli/DSML/assets/55870958/3ea4dd8b-0fa8-48ee-8f18-e76a94df712d">
 
-We implemented the basic [logistic regression](https://raw.githubusercontent.com/GiammarcoBozzelli/DSML/main/Code/DSML_Assignment_LogReg.py) algorithm without any additional specifications and got an accuracy of almost 30%. We then used Bayesian optimisation for hyperparameter tuning which increased accuracy to 39,78%. This is the highest value we obtained with the standard logistic regression. As can be seen below, we specified possible parameters for the regularisation strength *C*, the type, i.e. *penalty*, and the *solver*. Since the lbfgs solver does not support lasso regression, we tried two different parameter sets. We once excluded L1 and used both solvers and once excluded lbfgs and used both, ridge and lasso regression. The resulting accuracies were almost identical with 39,8% (excluding L1) and 39,9% (excluding lbfgs). Since the latter is higher, we reported the final value of **39,9%** accuracy of a logistic regression model using regularisation strength C of 0.441, L2 regularisation (Ridge Regression), and liblinear solver. 
+We implemented the basic [logistic regression](https://raw.githubusercontent.com/GiammarcoBozzelli/DSML/main/Code/DSML_Assignment_LogReg.py) algorithm without any additional specifications and got an accuracy of almost 30%. We then used Bayesian optimisation for hyperparameter tuning which increased accuracy to 39,78%. This is the highest value we obtained with the standard logistic regression. As can be seen below, we specified possible parameters for the regularisation strength *C*, the type, i.e. *penalty*, and the *solver*. Since the *lbfgs* solver does not support lasso regression, we tried two different parameter sets. We once excluded *L1* and used both solvers and once excluded *lbfgs* and used both, ridge and lasso regression. The resulting accuracies were almost identical with 39,8% (excluding *L1*) and 39,9% (excluding *lbfgs*). Since the latter is higher, we reported the final value of **39,9%** accuracy of a logistic regression model using regularisation strength *C* of 0.441, *L2* regularisation (Ridge Regression), and *liblinear* solver. 
 ```
 param_dist = {
     'C': (1e-6, 1e+6, 'log-uniform'),
@@ -79,6 +79,9 @@ param_dist = {
 }
 ```
 As for the models above, we used Bayesian optimisation for hyperparameter tuning. The main parameters are the regularisation strength *C*, and the *kernel* type. Degree and gamma are further specifications for the kernel function which we will not explore further. *C* controls the trade-off between maximizing the margin and minimizing the classification error. A smaller value allows for a larger margin at the cost of more classification errors, leading to a softer margin. A larger value aims to classify all training examples correctly but may result in a smaller margin, leading to a harder margin. The *kernel* parameter specifies which function to use. That is a linear, radial basis (Gaussian), or polynomial kernel function. In our optimised model specification, we use a C value of 928.74 and a Gaussian kernel. This yields us a final accuracy of **43,65%** which is so far the highest attained accuracy for our language difficulty predictor.
+
+#### Neural Network
+
 
 ### Application 
 Link to the Webapp 
