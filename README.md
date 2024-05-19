@@ -49,6 +49,8 @@ param_dist = {
 ```
 max_depth is the maximum allowed depth of the tree. We specified it to be at 50 levels. While deeper trees can model more complex relationships in the data, they may also lead to overfitting if they are too deep relative to the complexity of the dataset. The same argumentation is valid for min_samples_split which indicates how many samples must accumulate at one node in order for it to split. Early splitting can namely lead to overfitted models. Similarly, min_samples_leaf specifies how many samples a leaf must have at least. This ensures the model does not learn overly specific patterns at the loss of generalisation. The different measures of quality of a split are given in criterion, where Gini Impurity and Entropy are the most common. In our optimal decision tree model, we use Gini Impurity, a maximum depth of 50 levels, a minimum amount of samples per leaf of 15, and a minimum amount of samples for a split of 20. This leaves us with an accuracy of 28.33%. The remaining key evaluation metrics are given in the Table 1 above. 
 
+The decision tree model performs substantially worse than logistic regression and KNN. This can be due to several reasons. Most likely, it is because in text analysis we employ TF-IDF vectorizers. These transform the text into TF-IDF features that are high-dimensional and sparse. Decision trees may not handle this kind of data well, as they make splits based on individual features, and many features in our case may have zero values.
+
 ### Application 
 Link to the Webapp 
 Explanation of the Webapp 
