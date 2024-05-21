@@ -12,6 +12,7 @@ Created on Tue May 14 14:26:51 2024
 
 #imoprt packages
 import streamlit as st
+!pip install joblib
 import joblib
 import requests
 import os
