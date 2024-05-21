@@ -21,7 +21,7 @@ import pandas as pd
 from nltk.corpus import stopwords
 from nltk.stem import SnowballStemmer
 import nltk
-nltk.download('stopwords')
+#nltk.download('stopwords')
 
 
 #import data
