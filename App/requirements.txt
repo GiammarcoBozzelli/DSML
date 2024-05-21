@@ -1,7 +1,6 @@
 streamlit                                                
 joblib                                                           
-requests                                                         
-os                                                               
+requests                                                                                                                        
 pytube
 youtube_transcript_api
 pandas
