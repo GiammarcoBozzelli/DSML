@@ -91,6 +91,12 @@ We then tried a [neural network](https://raw.githubusercontent.com/GiammarcoBozz
 
 In the starting phase of our project, we conducted a quick Exploratory Data Analysis (EDA) to gain a first understanding of the given dataset. For this project, we examined various features of the sentences, including linguistic attributes such as word frequency, sentence length, syntactic complexity, and vocabulary diversity. Visualizing these features through histograms, scatter plots, and correlation matrices provided valuable insights into the relationships between different variables and the target difficulty levels. Additionally, we assessed the distribution of difficulty levels across the dataset to ensure a balanced representation, which is essential for building robust predictive models. The findings from the EDA guided our feature engineering and selection process, setting a solid foundation for the subsequent modelling phase.
 
+![EDA](https://github.com/GiammarcoBozzelli/DSML/assets/22881324/69d5f596-f265-4729-9cb9-a8bc48a66f57)
+
+Both sentence length and word count exhibit right-skewed distributions, indicating that most sentences are relatively short in terms of both character count and word count. The average word length in sentences tends to follow a normal distribution, with most words having around 5 characters on average. The majority of sentences are syntactically simple, with most containing only 1-2 clauses. There is a notable skew towards higher vocabulary diversity, with many sentences having a TTR close to 1. The dataset maintains a balanced distribution across different difficulty levels, ensuring that each category is well-represented for model training.
+
+![Correlation matrix](https://github.com/GiammarcoBozzelli/DSML/assets/22881324/eb9aff88-f3e6-462e-8886-6e3390179088)
+The correlation matrix reveals that sentence length, word count, and average word length have the strongest positive correlations with difficulty, indicating that longer and wordier sentences with longer words are generally more difficult. Syntactic complexity has a weaker positive correlation, suggesting a minor influence on difficulty. Conversely, vocabulary diversity has a negative correlation, suggesting that sentences with more unique words relative to the total number of words tend to be easier.
 #### 
 
 ### Application 
