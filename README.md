@@ -87,7 +87,9 @@ As for the models above, we used Bayesian optimisation for hyperparameter tuning
 
 We then tried a [neural network](https://raw.githubusercontent.com/GiammarcoBozzelli/DSML/main/Code/DSML_Assignment_NeuralNet.py) approach. It is built in four layers. The first is the embedding layer that converts the input sequences of word indices into vectors of fixed length. The second is the only hidden layer that processes the data and captures dependencies. The third layer is the dropout layer that prevents overfitting by randomly setting a fraction of input units to 0 (during training). The fourth is the output layer mapping the hidden layer's outputs to the available number of classes. We use Bayesian optimisation for hyperparameter tuning. The main goal is to define the dimension of the embedding (*embedding_dim*), the amount of neurons employed (*lstm_units*) in the hidden layer, and the dropout rate (*dropout_rate*). After implementing the tuner, we are left with an optimal model. It has an embedding dimension of 128, 64 neurons in the hidden layer, a dropout rate of 0.3, and a learning rate of 0.00092. Interestingly, the neural network approach only yields an accuracy of **45,1%**. This is only slightly better than the SVM approach above. 
 
-dsf
+#### EDA
+
+In the starting phase of our project, we conducted a quick Exploratory Data Analysis (EDA) to gain a first understanding of the given dataset. For this project, we examined various features of the sentences, including linguistic attributes such as word frequency, sentence length, syntactic complexity, and vocabulary diversity. Visualizing these features through histograms, scatter plots, and correlation matrices provided valuable insights into the relationships between different variables and the target difficulty levels. Additionally, we assessed the distribution of difficulty levels across the dataset to ensure a balanced representation, which is essential for building robust predictive models. The findings from the EDA guided our feature engineering and selection process, setting a solid foundation for the subsequent modelling phase.
 
 ### Application 
 Link to the Webapp 
