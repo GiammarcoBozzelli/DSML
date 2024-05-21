@@ -8,7 +8,7 @@ Created on Tue May 14 14:26:51 2024
 
 #!pip3 install streamlit
 #pip install streamlit pytube youtube-transcript-api
-!pip install requests joblib
+pip install requests joblib
 
 #imoprt packages
 import streamlit as st
