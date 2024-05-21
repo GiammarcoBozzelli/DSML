@@ -91,6 +91,8 @@ We then tried a [neural network](https://raw.githubusercontent.com/GiammarcoBozz
 
 In the starting phase of our project, we conducted a quick Exploratory Data Analysis (EDA) to gain a first understanding of the given dataset. For this project, we examined various features of the sentences, including linguistic attributes such as word frequency, sentence length, syntactic complexity, and vocabulary diversity. Visualizing these features through histograms, scatter plots, and correlation matrices provided valuable insights into the relationships between different variables and the target difficulty levels. Additionally, we assessed the distribution of difficulty levels across the dataset to ensure a balanced representation, which is essential for building robust predictive models. The findings from the EDA guided our feature engineering and selection process, setting a solid foundation for the subsequent modelling phase.
 
+#### 
+
 ### Application 
 Link to the Webapp 
 Explanation of the Webapp 
