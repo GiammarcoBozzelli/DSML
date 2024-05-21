@@ -96,6 +96,7 @@ In the starting phase of our project, we conducted a quick Exploratory Data Anal
 Both sentence length and word count exhibit right-skewed distributions, indicating that most sentences are relatively short in terms of both character count and word count. The average word length in sentences tends to follow a normal distribution, with most words having around 5 characters on average. The majority of sentences are syntactically simple, with most containing only 1-2 clauses. There is a notable skew towards higher vocabulary diversity, with many sentences having a TTR close to 1. The dataset maintains a balanced distribution across different difficulty levels, ensuring that each category is well-represented for model training.
 
 ![Correlation matrix](https://github.com/GiammarcoBozzelli/DSML/assets/22881324/eb9aff88-f3e6-462e-8886-6e3390179088)
+
 The correlation matrix reveals that sentence length, word count, and average word length have the strongest positive correlations with difficulty, indicating that longer and wordier sentences with longer words are generally more difficult. Syntactic complexity has a weaker positive correlation, suggesting a minor influence on difficulty. Conversely, vocabulary diversity has a negative correlation, suggesting that sentences with more unique words relative to the total number of words tend to be easier.
 #### 
 
