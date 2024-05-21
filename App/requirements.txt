@@ -1,0 +1,10 @@
+streamlit as st                                                  
+joblib                                                           
+requests                                                         
+os                                                               
+pytube
+youtube_transcript_api
+pandas
+nltk.corpus
+nltk.stem
+nltk
