@@ -236,6 +236,20 @@ training_args = TrainingArguments(
     fp16=True
 )
 ```
+|      | Precision | Recall | F1-Score | Support |
+|------|-----------|--------|----------|---------|
+| A1   | 0.71      | 0.57   | 0.63     | 169     |
+| A2   | 0.70      | 0.77   | 0.74     | 318     |
+| B1   | 0.74      | 0.78   | 0.76     | 329     |
+| B2   | 0.73      | 0.80   | 0.76     | 310     |
+| C1   | 0.75      | 0.76   | 0.76     | 312     |
+| C2   | 0.65      | 0.45   | 0.53     | 158     |
+| **Accuracy** |         |        | **0.72**    | 1596    |
+| **Macro Avg** | 0.71   | 0.69   | 0.70     | 1596    |
+| **Weighted Avg** | 0.72 | 0.72  | 0.72     | 1596    |
+
+The classification model demonstrates good overall performance with an accuracy of 72% and consistent weighted average scores for precision, recall, and F1-Score all at 0.72. Notably, classes B1, B2, and C1 exhibit strong results, as expected the model learned better those classes due to over-representaion in the dataset. Class A2 also performs well with a F1-score of 0.74. In contrast, Class C2 shows lower efficiency, indicated by its F1-score of 0.53, due to its lower recall of 0.45 despite reasonable precision.
+
 ### CamemBert on augmented_df 
 
 ```
