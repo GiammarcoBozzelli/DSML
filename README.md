@@ -102,23 +102,8 @@ We then tried a [neural network](https://raw.githubusercontent.com/GiammarcoBozz
 
 
 #### Transformers
-Due to the poor performance of "standard" models, we started to look at transformers since they would give use 
-
-### Additional features
-#### Feature Engineering Functions
-def get_sentence_length(sentence):
-    return len(sentence)
-
-def get_word_count(sentence):
-    words = nltk.word_tokenize(sentence)
-    return len(words)
-
-def get_avg_word_length(sentence):
-    words = nltk.word_tokenize(sentence)
-    return np.mean([len(word) for word in words])
-
-def count_punctuation(sentence):
-    return sum([1 for char in sentence if char in string.punctuation])
+Due to the poor performance of "standard" models, we started to look at transformers since they would give us the possibility to access models pre-trained on large datasets that will definetly perform better once finetuned to our training dataset.
+We first performed some feature engineering on the data. We calculated the length of each sentence, the number of words per sentence, the average word length for the sentence and counted the number of punctuation characters. The additional features were stacked on other parameters and passed to each model for fine-tuning. 
 
 #### DistilBert on training_data.csv
 
@@ -175,6 +160,11 @@ training_args = TrainingArguments(
 ![image](https://github.com/GiammarcoBozzelli/DSML/assets/22881324/991bf52d-adc4-4cfa-9769-86b13cea9044)
 
 ## Augmented DF over-representing classes A2, B1, B2 and C1
+Analyzing the accuracy for each class we realized that every model was relatively able to correctly categorise classes A1 and C2 while strugling with all classes in the middle. We tried to amplify the dataset by creating new entries for only the middle classes by using gpt-2 but the results didn't change, probably due to the low quality of the generated sentences.
+
+The approached that, surprisingly, worked best was to straightforward copy all sentences from those classes and concatenate them to the dataset. using this approach performances increased, as expected, dramatically for the training data but also increased the ability of models to generalize to unseen data. We believe that having the central classes overrepresented enabled the model to adapt the weight assigned to each class in a more balanced manner, permitting the model to better generalize. 
+
+Following is a list of all the models with relative performance on the augmented dataset.
 
 ### FlauBert on augmented_df with A2-C1 copied
 
@@ -216,6 +206,28 @@ training_args = TrainingArguments(
 
 ![image](https://github.com/GiammarcoBozzelli/DSML/assets/22881324/fdfa14f6-66f2-4c55-96ed-6707885c651d)
 
+### DistilBert on augmented data
+
+```
+training_args = TrainingArguments(
+    output_dir='./results',
+    num_train_epochs=10,
+    per_device_train_batch_size=8,
+    per_device_eval_batch_size=8,
+    warmup_steps=1000,
+    weight_decay=0.0005,
+    logging_dir='./logs',
+    logging_steps=20,
+    evaluation_strategy="epoch",
+    learning_rate=0.000005,
+    fp16=True
+)
+```
+
+
+
+### Final Pipeline for prediction
+Finally, we tried to combine all 3 of the above models in a pipeline to have as a final result three different predictions for each sentence and select the highest value out of the average of all probabilities for each class. The final result, using different configurations of the models parameters, yielded a maximum of 61,5% accuracy on unseen data. 
 
 ### Application 
 Link to the Webapp 
