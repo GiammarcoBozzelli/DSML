@@ -101,11 +101,15 @@ As for the models above, we used Bayesian optimisation for hyperparameter tuning
 We then tried a [neural network](https://raw.githubusercontent.com/GiammarcoBozzelli/DSML/main/Code/DSML_Assignment_NeuralNet.py) approach. It is built in four layers. The first is the embedding layer that converts the input sequences of word indices into vectors of fixed length. The second is the only hidden layer that processes the data and captures dependencies. The third layer is the dropout layer that prevents overfitting by randomly setting a fraction of input units to 0 (during training). The fourth is the output layer mapping the hidden layer's outputs to the available number of classes. We use Bayesian optimisation for hyperparameter tuning. The main goal is to define the dimension of the embedding (*embedding_dim*), the amount of neurons employed (*lstm_units*) in the hidden layer, and the dropout rate (*dropout_rate*). After implementing the tuner, we are left with an optimal model. It has an embedding dimension of 128, 64 neurons in the hidden layer, a dropout rate of 0.3, and a learning rate of 0.00092. Interestingly, the neural network approach only yields an accuracy of **45,1%**. This is only slightly better than the SVM approach above. 
 
 
-#### Transformers
-Due to the poor performance of "standard" models, we started to look at transformers since they would give us the possibility to access models pre-trained on large datasets that will definetly perform better once finetuned to our training dataset.
+## Transformers
+Due to the poor performance of "standard" models, we started to look at transformers since they would give us the possibility to access models pre-trained on large datasets that will definetly perform better once finetuned to our training dataset.Leveraging pre-trained models allows us to benefit from extensive training on large datasets, enabling our model to generalize better and improve its performance on predicting sentence difficulty without requiring a massive amount of labeled data.
+
 We first performed some feature engineering on the data. We calculated the length of each sentence, the number of words per sentence, the average word length for the sentence and counted the number of punctuation characters. The additional features were stacked on other parameters and passed to each model for fine-tuning. 
 
-#### DistilBert on training_data.csv
+### DistilBert on training_data.csvT
+BERT, which stands for Bidirectional Encoder Representations from Transformers, is a state-of-the-art language representation model developed by Google. Unlike traditional models that read text input sequentially (left-to-right or right-to-left), BERT processes text bidirectionally. This means it reads the entire sequence of words at once, allowing it to understand the context of a word based on all surrounding words in a sentence. This particularity makes it highly effective for various natural language processing (NLP), especially text classification in our case.
+
+While BERT is highly accurate, it is also computationally intensive, requiring substantial resources for both training and inference. To address this challenge, Hugging Face developed DistilBERT, a distilled version of BERT, way smaller but with almost the same capabilities. For this reason, we opted for DistilBER, which is perfect for us, having limited resources. Additionally, DistilBERT supports multiple languages, including French, ensuring that the model effectively understands and processes French sentences.
 
 ```
  training_args = TrainingArguments(
