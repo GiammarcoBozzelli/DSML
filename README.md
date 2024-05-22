@@ -265,6 +265,7 @@ training_args = TrainingArguments(
 | **Macro Avg** | 0.66   | 0.59   | 0.59     | 1596    |
 | **Weighted Avg** | 0.64 | 0.63  | 0.61     | 1596    |
 
+Camembert shows an overall accuracy of 63%, with macro and weighted averages for F1-score at 0.59 and 0.61, respectively. The performance across different classes is mixed, with Class A2 showing relatively high recall (0.80) and a decent F1-score (0.71), suggesting it effectively identifies true positive. Conversely, Class C2 exhibits high precision (0.75) but significantly low recall (0.19), leading to a poor F1-score (0.30), indicating it misses many true positive cases. The overrepresented classes in the dataframe show improved metric throughout as expected.
 
 ### FlauBert on augmented_df with A2-C1 copied
 
@@ -284,10 +285,22 @@ training_args = TrainingArguments(
 )
 ```
 
-![image](https://github.com/GiammarcoBozzelli/DSML/assets/22881324/63496ce4-75c5-4edd-af23-9d4762c17a62)
+|      | Precision | Recall | F1-Score | Support |
+|------|-----------|--------|----------|---------|
+| A1   | 0.75      | 0.67   | 0.71     | 169     |
+| A2   | 0.75      | 0.89   | 0.81     | 318     |
+| B1   | 0.86      | 0.83   | 0.85     | 329     |
+| B2   | 0.86      | 0.86   | 0.86     | 310     |
+| C1   | 0.87      | 0.89   | 0.88     | 312     |
+| C2   | 0.85      | 0.62   | 0.72     | 158     |
+| **Accuracy** |         |        | **0.82**    | 1596    |
+| **Macro Avg** | 0.82   | 0.79   | 0.80     | 1596    |
+| **Weighted Avg** | 0.83 | 0.82  | 0.82     | 1596    |
+
+Flaubert displays an overall accuracy of 82%. The macro and weighted average scores for precision, recall, and F1-score are closely aligned, showcasing strong consistency across different classes. Classes B1, B2, and C1 exhibit particularly high scores in all metrics as expected due to their over representation in the new dataset.
 
 ### Final Pipeline for prediction
-Finally, we tried to combine all 3 of the above models in a pipeline to have as a final result three different predictions for each sentence and select the highest value out of the average of all probabilities for each class. The final result, using different configurations of the models parameters, yielded a maximum of 61,5% accuracy on unseen data. 
+Finally, we tried to combine all 3 of the above models in a pipeline to have as a final result three different predictions for each sentence and select the highest value out of the average of all probabilities for each class. The final result, using different configurations of the models parameters, **yielded a maximum of 61,5% accuracy on unseen data.** 
 
 ### Application 
 Link to the Webapp 
