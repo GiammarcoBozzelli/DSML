@@ -326,8 +326,7 @@ Show the use of the predictor!!!
 Tutorial Link
 
 ### Work Partition 
-Gimmy did
-Tim did
+In our collaborative project, the division of labor was planned to ensure an equitable distribution of responsibilities. We equally shared the workload, with each of us contributing 50% to all facets of the project. This balanced approach enabled us to leverage our individual strengths effectively while ensuring that both perspectives were equally represented in every phase of the project.
 
 ### Disclaimer on GPT
 This report and the associated coding were developed with the assistance of ChatGPT.
