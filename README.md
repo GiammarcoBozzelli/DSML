@@ -106,10 +106,16 @@ Due to the poor performance of "standard" models, we started to look at transfor
 
 We first performed some feature engineering on the data. We calculated the length of each sentence, the number of words per sentence, the average word length for the sentence and counted the number of punctuation characters. The additional features were stacked on other parameters and passed to each model for fine-tuning. 
 
-### DistilBert on training_data.csvT
-BERT, which stands for Bidirectional Encoder Representations from Transformers, is a state-of-the-art language representation model developed by Google. Unlike traditional models that read text input sequentially (left-to-right or right-to-left), BERT processes text bidirectionally. This means it reads the entire sequence of words at once, allowing it to understand the context of a word based on all surrounding words in a sentence. This particularity makes it highly effective for various natural language processing (NLP), especially text classification in our case.
+### DistilBert on training_data.csv
+[BERT](https://arxiv.org/abs/1810.04805), which stands for Bidirectional Encoder Representations from Transformers, is a state-of-the-art language representation model developed by Google. Unlike traditional models that read text input sequentially (left-to-right or right-to-left), BERT processes text bidirectionally. This means it reads the entire sequence of words at once, allowing it to understand the context of a word based on all surrounding words in a sentence. This particularity makes it highly effective for various natural language processing (NLP), especially text classification in our case.
 
 While BERT is highly accurate, it is also computationally intensive, requiring substantial resources for both training and inference. To address this challenge, Hugging Face developed DistilBERT, a distilled version of BERT, way smaller but with almost the same capabilities. For this reason, we opted for DistilBER, which is perfect for us, having limited resources. Additionally, DistilBERT supports multiple languages, including French, ensuring that the model effectively understands and processes French sentences.
+
+To train our DistilBERT model, we configured several parameters using the `TrainingArguments` class from the Hugging Face Transformers library. These parameters were the ones who yelled the best results in the training process. To point out are:
+
+- *learning_rate*: A small learning rate of 0.00005 is chosen to ensure stable training.
+- *weight_decay*: A small weight decay of 0.0015 is applied to prevent overfitting by penalizing large weights.
+- *num_train_epochs*: The number of times the entire training dataset is passed through the model. We set this to 8 to ensure sufficient training.
 
 ```
  training_args = TrainingArguments(
@@ -126,8 +132,24 @@ While BERT is highly accurate, it is also computationally intensive, requiring s
         fp16=True
     )
 ```
-****![image](https://github.com/GiammarcoBozzelli/DSML/assets/22881324/61e2ec14-d036-44a0-94ae-daeb839fee28)
+
+|                | precision | recall | f1-score | support |
+|----------------|-----------|--------|----------|---------|
+| A1             | 0.66      | 0.66   | 0.66     | 205     |
+| A2             | 0.50      | 0.49   | 0.50     | 214     |
+| B1             | 0.45      | 0.49   | 0.47     | 216     |
+| B2             | 0.53      | 0.51   | 0.52     | 221     |
+| C1             | 0.49      | 0.53   | 0.51     | 208     |
+| C2             | 0.66      | 0.58   | 0.62     | 216     |
+| **accuracy**   |           |        | 0.54     | 1280    |
+| **macro avg**  | 0.55      | 0.54   | 0.55     | 1280    |
+| **weighted avg** | 0.55      | 0.54   | 0.54     | 1280    |
+
+The evaluation metrics show that the model has varying performance across different difficulty levels. The precision, recall, and F1-scores range from moderate to good, with level A1 and C2 achieving the highest F1-scores. The overall accuracy of 54% indicates that there is room for improvement in the model. The macro and weighted averages suggest that the model performs fairly consistently across classes, although certain levels like B1 and A2 have lower scores, highlighting potential areas for model tuning and further improvement.
+
 ### CamemBert on training_data.csv
+Next, we tried using the [CamemBERT](https://arxiv.org/abs/1911.03894) model, another variant of the BERT model (Bidirectional Encoder Representations from Transformers) specifically pre-trained on French language data. This model was trained on a diverse and large French dataset, which helps it grasp the syntactic and semantic nuances of the French language more effectively than a general multilingual model like BERT.
+
 ```
     training_args = TrainingArguments(
         output_dir=f'./results_fold_{fold + 1}',
@@ -143,9 +165,23 @@ While BERT is highly accurate, it is also computationally intensive, requiring s
         fp16=True
     )
 ```
-![image](https://github.com/GiammarcoBozzelli/DSML/assets/22881324/934f4bd3-7b6c-4eb8-8c09-39c30df564c9)
+|      | Precision | Recall | F1-Score | Support |
+|------|-----------|--------|----------|---------|
+| A1   | 0.66      | 0.66   | 0.66     | 205     |
+| A2   | 0.50      | 0.49   | 0.50     | 214     |
+| B1   | 0.45      | 0.49   | 0.47     | 216     |
+| B2   | 0.53      | 0.51   | 0.52     | 221     |
+| C1   | 0.49      | 0.53   | 0.51     | 208     |
+| C2   | 0.66      | 0.58   | 0.62     | 216     |
+| **Accuracy** |         |        | **0.54**    | 1280    |
+| **Macro Avg** | 0.55   | 0.54   | 0.55     | 1280    |
+| **Weighted Avg** | 0.55 | 0.54  | 0.54     | 1280    |
+
+CamemBERT exhibits an overall accuracy at 54%, with both macro and weighted average F1-scores hovering around 0.55. Class A1 demonstrates the best performance with balanced precision and recall, both at 0.66. In contrast, Class B1 underperforms with the lowest F1-score of 0.47 and precision at 0.45, indicating a significant area for improvement. The model shows a mixed balance between precision and recall across classes, with classes A1 and C2 performing the best.
 
 ### FlauBert on training_data.csv
+Finally, we tried with yet another French language adaptation of BERT, the [FlauBERT](https://arxiv.org/abs/1912.05372) model, designed to perform natural language processing tasks specifically for the French language. FlauBERT is built by the French National Institute for Research in Digital Science and Technology (INRIA) and the Sorbonne University, following the architecture and pre-training approach of the original BERT model created by Google. FlauBERT was exclusively trained on a large and diverse corpus of French text, encompassing a wide range of genres and sources, which makes it highly proficient in understanding and generating French language constructs.
+
 ```
 training_args = TrainingArguments(
         output_dir=f'./results_fold_{fold + 1}',
@@ -161,7 +197,19 @@ training_args = TrainingArguments(
         fp16=True
     )
 ```
-![image](https://github.com/GiammarcoBozzelli/DSML/assets/22881324/991bf52d-adc4-4cfa-9769-86b13cea9044)
+|      | Precision | Recall | F1-Score | Support |
+|------|-----------|--------|----------|---------|
+| A1   | 0.72      | 0.69   | 0.71     | 122     |
+| A2   | 0.54      | 0.60   | 0.57     | 131     |
+| B1   | 0.48      | 0.58   | 0.53     | 118     |
+| B2   | 0.57      | 0.53   | 0.55     | 145     |
+| C1   | 0.43      | 0.36   | 0.39     | 121     |
+| C2   | 0.62      | 0.62   | 0.62     | 131     |
+| **Accuracy** |         |        | **0.56**    | 768    |
+| **Macro Avg** | 0.56   | 0.56   | 0.56     | 768    |
+| **Weighted Avg** | 0.56 | 0.56  | 0.56     | 768    |
+
+FlauBERT exhibits a moderate overall performance with an accuracy of 56%, and uniform macro and weighted averages for precision, recall, and F1-score at 0.56. The model's best-performing class is A1 with the highest precision and F1-score at 0.72 and 0.71 respectively, while C1 is the weakest with significantly lower metrics, showing an F1-score of only 0.39. Classes A2 and B1 are characterized by higher recall than precision, indicating a tendency to over-predict, whereas C2 demonstrates a balanced performance with both precision and recall at 0.62. Improvements in precision for several classes and boosting recall for the weakest classes could enhance the model's overall efficacy
 
 ## Augmented DF over-representing classes A2, B1, B2 and C1
 Analyzing the accuracy for each class we realized that every model was relatively able to correctly categorise classes A1 and C2 while strugling with all classes in the middle. We tried to amplify the dataset by creating new entries for only the middle classes by using gpt-2 but the results didn't change, probably due to the low quality of the generated sentences.
@@ -169,6 +217,54 @@ Analyzing the accuracy for each class we realized that every model was relativel
 The approached that, surprisingly, worked best was to straightforward copy all sentences from those classes and concatenate them to the dataset. using this approach performances increased, as expected, dramatically for the training data but also increased the ability of models to generalize to unseen data. We believe that having the central classes overrepresented enabled the model to adapt the weight assigned to each class in a more balanced manner, permitting the model to better generalize. 
 
 Following is a list of all the models with relative performance on the augmented dataset.
+
+
+### DistilBert on augmented data
+
+```
+training_args = TrainingArguments(
+    output_dir='./results',
+    num_train_epochs=10,
+    per_device_train_batch_size=8,
+    per_device_eval_batch_size=8,
+    warmup_steps=1000,
+    weight_decay=0.0005,
+    logging_dir='./logs',
+    logging_steps=20,
+    evaluation_strategy="epoch",
+    learning_rate=0.000005,
+    fp16=True
+)
+```
+### CamemBert on augmented_df 
+
+```
+training_args = TrainingArguments(
+    output_dir='./results',
+    num_train_epochs=10,
+    per_device_train_batch_size=8,
+    per_device_eval_batch_size=8,
+    warmup_steps=1000,
+    weight_decay=0.0005,
+    logging_dir='./logs',
+    logging_steps=20,
+    evaluation_strategy="epoch",
+    learning_rate=0.000005,
+    fp16=True
+)
+```
+|         | Precision | Recall | F1-Score | Support |
+|---------|-----------|--------|----------|---------|
+| A1      | 0.73      | 0.64   | 0.68     | 169     |
+| A2      | 0.65      | 0.80   | 0.71     | 318     |
+| B1      | 0.67      | 0.69   | 0.68     | 329     |
+| B2      | 0.54      | 0.73   | 0.62     | 310     |
+| C1      | 0.61      | 0.50   | 0.55     | 312     |
+| C2      | 0.75      | 0.19   | 0.30     | 158     |
+| **Accuracy** |         |        | **0.63**    | 1596    |
+| **Macro Avg** | 0.66   | 0.59   | 0.59     | 1596    |
+| **Weighted Avg** | 0.64 | 0.63  | 0.61     | 1596    |
+
 
 ### FlauBert on augmented_df with A2-C1 copied
 
@@ -190,46 +286,6 @@ training_args = TrainingArguments(
 
 ![image](https://github.com/GiammarcoBozzelli/DSML/assets/22881324/63496ce4-75c5-4edd-af23-9d4762c17a62)
 
-### CamemBert on augmented_df with A2-C1 copied
-
-```
-training_args = TrainingArguments(
-    output_dir='./results',
-    num_train_epochs=10,
-    per_device_train_batch_size=8,
-    per_device_eval_batch_size=8,
-    warmup_steps=1000,
-    weight_decay=0.0005,
-    logging_dir='./logs',
-    logging_steps=20,
-    evaluation_strategy="epoch",
-    learning_rate=0.000005,
-    fp16=True
-)
-```
-
-![image](https://github.com/GiammarcoBozzelli/DSML/assets/22881324/fdfa14f6-66f2-4c55-96ed-6707885c651d)
-
-### DistilBert on augmented data
-
-```
-training_args = TrainingArguments(
-    output_dir='./results',
-    num_train_epochs=10,
-    per_device_train_batch_size=8,
-    per_device_eval_batch_size=8,
-    warmup_steps=1000,
-    weight_decay=0.0005,
-    logging_dir='./logs',
-    logging_steps=20,
-    evaluation_strategy="epoch",
-    learning_rate=0.000005,
-    fp16=True
-)
-```
-
-
-
 ### Final Pipeline for prediction
 Finally, we tried to combine all 3 of the above models in a pipeline to have as a final result three different predictions for each sentence and select the highest value out of the average of all probabilities for each class. The final result, using different configurations of the models parameters, yielded a maximum of 61,5% accuracy on unseen data. 
 
@@ -247,4 +303,4 @@ Gimmy did
 Tim did
 
 ### Disclaimer on GPT
-We used chat only to help us code bla bla
+This report and the associated coding were developed with the assistance of ChatGPT.
