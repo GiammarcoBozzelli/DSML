@@ -102,7 +102,120 @@ We then tried a [neural network](https://raw.githubusercontent.com/GiammarcoBozz
 
 
 #### Transformers
-Due to poor performance of "standard" models, we started to look at transformers since they would give use 
+Due to the poor performance of "standard" models, we started to look at transformers since they would give use 
+
+### Additional features
+#### Feature Engineering Functions
+def get_sentence_length(sentence):
+    return len(sentence)
+
+def get_word_count(sentence):
+    words = nltk.word_tokenize(sentence)
+    return len(words)
+
+def get_avg_word_length(sentence):
+    words = nltk.word_tokenize(sentence)
+    return np.mean([len(word) for word in words])
+
+def count_punctuation(sentence):
+    return sum([1 for char in sentence if char in string.punctuation])
+
+#### DistilBert on training_data.csv
+
+```
+ training_args = TrainingArguments(
+        output_dir=f'./results_fold_{fold + 1}',
+        num_train_epochs=8,
+        per_device_train_batch_size=8,
+        per_device_eval_batch_size=16,
+        warmup_steps=1000,
+        weight_decay=0.0015,
+        logging_dir=f'./logs_fold_{fold + 1}',
+        logging_steps=20,
+        evaluation_strategy="epoch",
+        learning_rate=0.00005,
+        fp16=True
+    )
+```
+****![image](https://github.com/GiammarcoBozzelli/DSML/assets/22881324/61e2ec14-d036-44a0-94ae-daeb839fee28)
+### CamemBert on training_data.csv
+```
+    training_args = TrainingArguments(
+        output_dir=f'./results_fold_{fold + 1}',
+        num_train_epochs=8,
+        per_device_train_batch_size=8,
+        per_device_eval_batch_size=16,
+        warmup_steps=1000,
+        weight_decay=0.0015,
+        logging_dir=f'./logs_fold_{fold + 1}',
+        logging_steps=20,
+        evaluation_strategy="epoch",
+        learning_rate=0.00005,
+        fp16=True
+    )
+```
+![image](https://github.com/GiammarcoBozzelli/DSML/assets/22881324/934f4bd3-7b6c-4eb8-8c09-39c30df564c9)
+
+### FlauBert on training_data.csv
+```
+training_args = TrainingArguments(
+        output_dir=f'./results_fold_{fold + 1}',
+        num_train_epochs=10,
+        per_device_train_batch_size=8,
+        per_device_eval_batch_size=16,
+        warmup_steps=1000,
+        weight_decay=0.0015,
+        logging_dir=f'./logs_fold_{fold + 1}',
+        logging_steps=20,
+        evaluation_strategy="epoch",
+        learning_rate=0.00001,
+        fp16=True
+    )
+```
+![image](https://github.com/GiammarcoBozzelli/DSML/assets/22881324/991bf52d-adc4-4cfa-9769-86b13cea9044)
+
+## Augmented DF over-representing classes A2, B1, B2 and C1
+
+### FlauBert on augmented_df with A2-C1 copied
+
+```
+training_args = TrainingArguments(
+    output_dir='./results',
+    num_train_epochs=16,
+    per_device_train_batch_size=8,
+    per_device_eval_batch_size=8,
+    warmup_steps=1000,
+    weight_decay=0.0005,
+    logging_dir='./logs',
+    logging_steps=20,
+    evaluation_strategy="epoch",
+    learning_rate=0.000005,
+    fp16=True
+)
+```
+
+![image](https://github.com/GiammarcoBozzelli/DSML/assets/22881324/63496ce4-75c5-4edd-af23-9d4762c17a62)
+
+### CamemBert on augmented_df with A2-C1 copied
+
+```
+training_args = TrainingArguments(
+    output_dir='./results',
+    num_train_epochs=10,
+    per_device_train_batch_size=8,
+    per_device_eval_batch_size=8,
+    warmup_steps=1000,
+    weight_decay=0.0005,
+    logging_dir='./logs',
+    logging_steps=20,
+    evaluation_strategy="epoch",
+    learning_rate=0.000005,
+    fp16=True
+)
+```
+
+![image](https://github.com/GiammarcoBozzelli/DSML/assets/22881324/fdfa14f6-66f2-4c55-96ed-6707885c651d)
+
 
 ### Application 
 Link to the Webapp 
