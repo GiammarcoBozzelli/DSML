@@ -323,7 +323,7 @@ training_args = TrainingArguments(
 Flaubert displays an overall accuracy of 82%. The macro and weighted average scores for precision, recall, and F1-score are closely aligned, showcasing strong consistency across different classes. Classes B1, B2, and C1 exhibit particularly high scores in all metrics as expected due to their over representation in the new dataset.
 
 #### Final Pipeline for prediction
-Finally, we tried to combine all 3 of the above models in a pipeline to have as a final result three different predictions for each sentence and select the highest value out of the average of all probabilities for each class. The final result, using different configurations of the models parameters, **yielded a maximum of 61,5% accuracy on unseen data.** *(DATA/best_sub.csv)* 
+We finally developed a pipeline combining the three models to generate predictions for each sentence. Each model independently predicts the classification, resulting in three sets of probability scores per sentence. We then average these probability scores across the three models for each class. The final prediction for each sentence is determined by selecting the class with the highest average probability. By experimenting with various configurations of the model's parameters, we achieved a maximum accuracy of 61.5% on unseen data. This result, representing the best performance, is documented in the file [best_sub.csv](https://github.com/Kurthhenry/DSML/blob/main/DATA/best_sub.csv). Integrating multiple models and averaging their outputs enhances the robustness and accuracy of the predictions, leading to our highest observed accuracy on new data.
 
 ### Application 
 Link to the Webapp 
