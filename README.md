@@ -1,5 +1,5 @@
 # Data Science and Machine Learning
-## Final Report: Team Basel (Tim Bättig & Giammarco Bozzelli) 
+## Final Report: Team Basel (Tim Bättig & Giammarco Bozzelli) - 7th in Kaggle competition
 [GitHub Directory](https://github.com/Kurthhenry/DSML)
 
 ### Introduction
