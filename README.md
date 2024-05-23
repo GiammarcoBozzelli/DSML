@@ -1,5 +1,6 @@
 # Data Science and Machine Learning
-## Final Report: Team Basel (Tim Bättig & Giammarco Bozzelli)
+## Final Report: Team Basel (Tim Bättig & Giammarco Bozzelli) 
+[GitHub Directory](https://github.com/Kurthhenry/DSML)
 
 ### Introduction
 We were tasked with finding building a machine learning model that can predict the difficulty of French sentences. To achieve this, we tried a plethora of different models, the results of which are summarized in the table below. The highest accuracy was obtained by combining the three last models, i.e. DistilBert, CamemBert, and FlauBert. This yielded us the final and highest accuracy of 61,5% over unseen data. The report below will explain how we proceeded and which models we used. For each of the models, a brief summary and interpretation of the results will be provided. We will then introduce the webapp that we have developed to apply the classifier we achieved the highest accuracy with. 
