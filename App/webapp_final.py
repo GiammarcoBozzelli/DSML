@@ -47,6 +47,10 @@ def preprocess_text(text):
     tokens = [stemmer.stem(word) for word in tokens]
     return ' '.join(tokens)
 
+# Function to truncate text to a maximum length
+def truncate_text(text, max_length=512):
+    return text[:max_length] if isinstance(text, str) else text
+
 # Function to extract video ID from YouTube URL
 def extract_video_id(youtube_url):
     return YouTube(youtube_url).video_id
@@ -59,10 +63,13 @@ def get_transcript(video_id):
 # Function to analyze transcript
 def analyze_transcript(transcript):
     sentences = transcript.split('. ')
+    if len(sentences) == 1:
+        st.warning("Unfortunately, we could not process the video because it is of low quality. Please provide another French Youtube video")
     processed_sentences = [preprocess_text(sentence) for sentence in sentences]
+    truncated_sentences = [truncate_text(sentence) for sentence in processed_sentences]
 
-    camembert_probs = camembert_classifier(processed_sentences)
-    flaubert_probs = flaubert_classifier(processed_sentences)
+    camembert_probs = camembert_classifier(truncated_sentences)
+    flaubert_probs = flaubert_classifier(truncated_sentences)
 
     camembert_probs_array = np.array([[prob['score'] for prob in probs] for probs in camembert_probs])
     flaubert_probs_array = np.array([[prob['score'] for prob in probs] for probs in flaubert_probs])
@@ -74,7 +81,7 @@ def analyze_transcript(transcript):
     inverse_label_mapping = {v: k for k, v in label_mapping.items()}
     final_labels = [inverse_label_mapping[pred] for pred in final_preds]
 
-    return final_labels
+    return sentences, final_labels
 
 def get_thumbnail_url(youtube_url):
     yt = YouTube(youtube_url)
@@ -108,7 +115,7 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.image("https://raw.githubusercontent.com/GiammarcoBozzelli/DSML/main/DATA/B&B_Digital.webp", width=300)
+st.image("/Users/timbaettig/Library/Mobile Documents/com~apple~CloudDocs/00_Privat/00_EPFL/Courses/SS 2024/Data Science and Machine Learning/Project/Data/B&B_Digital.webp", width=300)
 
 st.title("How Difficult Is My YouTube Video?")
 
@@ -136,9 +143,8 @@ if st.button("Analyze"):
             st.session_state.youtube_url = youtube_url
             video_id = extract_video_id(youtube_url)
             transcript = get_transcript(video_id)
-            sentences = transcript.split('. ')
-            sentence_difficulties = analyze_transcript(transcript)
-            difficulty = analyze_transcript(transcript)[0]  # Only the first item is needed
+            sentences, sentence_difficulties = analyze_transcript(transcript)
+            difficulty = sentence_difficulties[0]  # Only the first item is needed
             thumbnail_url = get_thumbnail_url(youtube_url)
             st.session_state.transcript = transcript
             st.session_state.sentences = sentences
