@@ -27,8 +27,8 @@ from keras_tuner import RandomSearch
 from sklearn.preprocessing import LabelEncoder
 
 directory = "/Users/timbaettig/Library/Mobile Documents/com~apple~CloudDocs/00_Privat/00_EPFL/Courses/SS 2024/Data Science and Machine Learning/Project/Data/"
-training = pd.read_csv("https://raw.githubusercontent.com/GiammarcoBozzelli/DSML/main/DATA/training_data.csv")
-test = pd.read_csv("https://raw.githubusercontent.com/GiammarcoBozzelli/DSML/main/DATA/unlabelled_test_data.csv")
+training = pd.read_csv("https://raw.githubusercontent.com/Kurthhenry/DSML/main/DATA/training_data.csv")
+test = pd.read_csv("https://raw.githubusercontent.com/Kurthhenry/DSML/main/DATA/unlabelled_test_data.csv")
 
 # DATA PROCESSING
 # ------------------------------------------------------------------------------------------------
