@@ -336,7 +336,7 @@ The webapp comes with several limitations that we do not want to hide. Firstly, 
 
 ![image](https://github.com/Kurthhenry/DSML/assets/55870958/dfa009c6-e164-4b8a-88a7-1def91705644)
 
-Thirdly, the loading time when using the app for the first time is quite lengthy. That is, because we load the CamemBert and DistilBert models from [Hugging Face](https://huggingface.co/kurthhenry) Hub into the local IDE. This takes time because it requires substantial WIFI bandwith and computing power. In a situation of actual app deployment, this issue would have to be fixed to provide a satisfactory user experience. 
+Thirdly, the loading time when using the app for the first time is quite lengthy. That is, because we load the CamemBert and Flaubert models from [Hugging Face](https://huggingface.co/kurthhenry) Hub into the local IDE. This takes time because it requires substantial WIFI bandwith and computing power. In a situation of actual app deployment, this issue would have to be fixed to provide a satisfactory user experience. 
 
 ### Video
 [Link](https://youtu.be/53AOo4s1gao) to our YouTube Video Submission.
