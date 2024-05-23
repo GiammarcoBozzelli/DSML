@@ -1,7 +1,17 @@
 # Data Science and Machine Learning
-## Final Report: Team Basel (Tim Battig & Giammarco Bozzelli)
+## Final Report: Team Basel (Tim Bättig & Giammarco Bozzelli)
 
-### Intro
+### Introduction
+We were tasked with finding building a machine learning model that can predict the difficulty of French sentences. To achieve this, we tried a plethora of different models, the results of which are summarized in the table below. The highest accuracy was obtained by combining the three last models, i.e. DistilBert, CamemBert, and FlauBert. This yielded us the final and highest accuracy of 61,5% over unseen data. The report below will explain how we proceeded and which models we used. For each of the models, a brief summary and interpretation of the results will be provided. We will then introduce the webapp that we have developed to apply the classifier we achieved the highest accuracy with. 
+
+|                   | Logistic Regression | KNN   | Decision Tree | Random Forest | SVM   | Neural Network | DistilBert | CamemBert | FlauBert |
+|-------------------|---------------------|-------|---------------|---------------|-------|----------------|------------|-----------|----------|
+| Precision         | 41.0%               | 38.0% | 31.0%         | 40.0%         | 44.0% | 45.0%          | 55.00%     | 55.00%    | 56.00%   |
+| Recall            | 41.0%               | 38.0% | 31.0%         | 41.0%         | 44.0% | 45.0%          | 54.00%     | 54.00%    | 56.00%   |
+| F1-Score          | 41.0%               | 36.0% | 30.0%         | 39.0%         | 44.0% | 45.0%          | 54.00%     | 54.00%    | 56.00%   |
+| Training Accuracy | 41.5%               | 37.9% | 31.3%         | 40.9%         | 43.7% | 45.1%          | 54.00%     | 54.00%    | 56.00%   |
+
+
 #### EDA
 
 In the starting phase of our project, we conducted a quick Exploratory Data Analysis (EDA) to gain a first understanding of the given dataset. For this project, we examined various features of the sentences, including linguistic attributes such as word frequency, sentence length, syntactic complexity, and vocabulary diversity. Visualizing these features through histograms, scatter plots, and correlation matrices provided valuable insights into the relationships between different variables and the target difficulty levels. Additionally, we assessed the distribution of difficulty levels across the dataset to ensure a balanced representation, which is essential for building robust predictive models. The findings from the EDA guided our feature engineering and selection process, setting a solid foundation for the subsequent modelling phase.
